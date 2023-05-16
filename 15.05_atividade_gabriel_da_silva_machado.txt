@@ -1,0 +1,113 @@
+1 e 2- Requisitos b sicos e Descri‡Æo textual:
+
+1- Registrar Pedido:
+O sistema deve permitir que os clientes registrem pedidos de concreto.
+Os clientes devem fornecer o tipo e a quantidade de concreto desejados.
+Os pedidos podem ser feitos para entrega em um ou mais dias.
+
+2- Escalonar Pedido:
+O sistema deve permitir que o departamento de vendas escalone os pedidos recebidos.
+O departamento de vendas deve encaminhar os pedidos … produ‡Æo.
+Os pedidos escalonados devem ser repassados ao encarregado de produ‡Æo para execu‡Æo.
+
+3- Controlar Produ‡Æo:
+O sistema deve permitir o controle da produ‡Æo de concreto.
+A  rea de produ‡Æo deve executar os pedidos recebidos, solicitando os materiais necess rios.
+O encarregado do almoxarifado e estocagem deve entregar os materiais no local de produ‡Æo.
+O operador das m quinas deve realizar os controles de fabrica‡Æo com a ajuda dos oper rios respons veis pela mistura dos componentes e do funcion rio encarregado do controle de fluxo de trabalho.
+
+4- Gerenciar Estoque:
+O sistema deve permitir o gerenciamento do estoque de mat‚rias-primas.
+Caso algum produto da mat‚ria-prima fique abaixo do n¡vel de seguran‡a, o encarregado da produ‡Æo deve emitir um pedido de compra para o departamento de compras.
+Ap¢s a entrega, o setor de recebimento e distribui‡Æo deve verificar se a mercadoria foi entregue conforme solicitado.
+
+5- Gerenciar Transporte e Entrega:
+O sistema deve permitir o gerenciamento do transporte e entrega dos pedidos de concreto.
+A transportadora da empresa deve ser respons vel pela entrega dos pedidos aos clientes.
+A transportadora deve ser acionada pelo sistema para efetuar as entregas.
+
+6- Receber Pagamento:
+O sistema deve permitir o recebimento de pagamentos dos clientes.
+O departamento financeiro da ind£stria deve receber os pagamentos realizados pelos clientes ap¢s a entrega do produto.
+
+
+3 - Descri‡Æo diagram tica:
+
+@startuml CasoDeUso_IndustriaConcreto
+
+left to right direction
+skinparam packageStyle rect
+actor Cliente
+actor "Departamento de Vendas" as dv
+actor Produ‡Æo
+actor "Almoxarifado e Estocagem" as ae
+actor "Setor de Recebimento e Distribui‡Æo" as srd
+actor Transportadora
+actor "Departamento Financeiro" as df
+
+rectangle "Sistema de Produ‡Æo da Ind£stria de Concreto" {
+  usecase "Registrar Pedido" as UC1
+  usecase "Escalonar Pedido" as UC2
+  usecase "Controlar Produ‡Æo" as UC3
+  usecase "Gerenciar Estoque" as UC4
+  usecase "Gerenciar Transporte e Entrega" as UC5
+  usecase "Receber Pagamento" as UC6
+
+  Cliente -- UC1
+  dv -- UC1
+  dv -- UC2
+  UC2 ..> Produ‡Æo : <<extend>>
+  Produ‡Æo -- UC3
+  Produ‡Æo ..> UC4 : <<extend>>
+  ae -- UC4
+  srd -- UC4
+  Transportadora -- UC5 : <<include>>
+  df -- UC6
+}
+@enduml
+
+4- Modelo de classes:
+
+@startuml
+
+class Cliente {
+  - nome: String
+  - endereco: String
+  - telefone: String
+  + fazerPedido(): void
+  + efetuarPagamento(): void
+}
+
+class DepartamentoVendas {
+  + receberPedido(): void
+  + escalonarPedido(): void
+}
+
+class Producao {
+  + controlarProducao(): void
+}
+
+class AlmoxarifadoEstocagem {
+  + gerenciarEstoque(): void
+}
+
+class SetorRecebimentoDistribuicao {
+  + gerenciarTransporteEntrega(): void
+}
+
+class Transportadora {
+  + gerenciarTransporteEntrega(): void
+}
+
+class DepartamentoFinanceiro {
+  + receberPagamento(): void
+}
+
+Cliente --> DepartamentoVendas
+DepartamentoVendas --> Producao
+Producao --> AlmoxarifadoEstocagem
+AlmoxarifadoEstocagem --> SetorRecebimentoDistribuicao
+SetorRecebimentoDistribuicao --> Transportadora
+Cliente --> DepartamentoFinanceiro
+
+@enduml
